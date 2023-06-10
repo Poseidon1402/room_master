@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 
 import 'core/constants/route_path.dart';
 import 'features/auth/presentation/auth_screen.dart';
+import 'features/room_list/presentation/room_list_screen.dart';
 import 'features/subscribe/presentation/subscribe_screen.dart';
 
 class AppRouter {
@@ -15,6 +16,10 @@ class AppRouter {
       GoRoute(
         path: RoutePath.signUp,
         builder: (context, state) => const SubscribeScreen(),
+      ),
+      GoRoute(
+        path: RoutePath.roomList,
+        builder: (context, state) => const RoomListScreen(),
       ),
     ]
   );

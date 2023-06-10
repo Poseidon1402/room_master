@@ -70,7 +70,7 @@ class AuthBody extends StatelessWidget {
             ),
             SizedBox(height: 47.h,),
             AppElevatedButton(
-              onPressed: () => print('test'),
+              onPressed: () => context.go(RoutePath.roomList),
               text: 'Se connecter',
             ),
             const Spacer(),
