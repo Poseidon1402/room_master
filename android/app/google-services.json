@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "313686902914",
+    "project_id": "meeting-room-596bb",
+    "storage_bucket": "meeting-room-596bb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:313686902914:android:6400aa873b75509bf5cc9b",
+        "android_client_info": {
+          "package_name": "com.aina.meeting_room"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "313686902914-aenbic6jj9ck3jgtkctipjatcscf292k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDb6xurzeKgGCBE5lo4S7O0fyDzt3LfRWM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "313686902914-aenbic6jj9ck3jgtkctipjatcscf292k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
