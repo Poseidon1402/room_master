@@ -5,9 +5,9 @@ import 'package:google_fonts/google_fonts.dart';
 class AppTheme {
   static final TextTheme textTheme = TextTheme(
     titleLarge:
-    GoogleFonts.poppins(fontSize: 20.0.sp, fontWeight: FontWeight.w700),
+    GoogleFonts.poppins(fontSize: 24.0.sp, fontWeight: FontWeight.w700),
     titleSmall:
-    GoogleFonts.poppins(fontSize: 14.0.sp, fontWeight: FontWeight.w600),
+    GoogleFonts.poppins(fontSize: 18.0.sp, fontWeight: FontWeight.w600),
     bodyLarge:
     GoogleFonts.poppins(fontSize: 16.0.sp, fontWeight: FontWeight.w700),
     bodyMedium:

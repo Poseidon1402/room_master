@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'core/constants/route_path.dart';
+import 'features/auth/presentation/auth_screen.dart';
 
 class AppRouter {
   static GoRouter configurations = GoRouter(
@@ -9,7 +9,7 @@ class AppRouter {
     routes: [
       GoRoute(
         path: RoutePath.signIn,
-        builder: (context, state) => Container(color: Colors.red),
+        builder: (context, state) => const AuthScreen(),
       ),
     ]
   );
