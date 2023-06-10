@@ -1,8 +1,11 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:meeting_room/core/presentation/components/app_text_form_field.dart';
 
 import '../../../../core/constants/app_color.dart';
+import '../../../../core/constants/route_path.dart';
 import '../../../../core/presentation/components/app_elevated_button.dart';
 
 class AuthBody extends StatelessWidget {
@@ -16,7 +19,7 @@ class AuthBody extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: 34.w,
-          vertical: 63.h,
+          vertical: 35.h,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,6 +83,10 @@ class AuthBody extends StatelessWidget {
                     ),
                   ),
                   TextSpan(
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        context.push(RoutePath.signUp);
+                      },
                     text: ' S\'inscrire',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: AppColor.purple,
