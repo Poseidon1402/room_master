@@ -2,17 +2,17 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:meeting_room/core/presentation/components/app_text_form_field.dart';
 
 import '../../../../core/constants/app_color.dart';
-import '../../../../core/constants/route_path.dart';
 import '../../../../core/presentation/components/app_elevated_button.dart';
+import '../../../../core/presentation/components/app_text_form_field.dart';
 
-class AuthBody extends StatelessWidget {
-  const AuthBody({super.key});
+class SubscribeBody extends StatelessWidget {
+  const SubscribeBody({super.key});
 
   @override
   Widget build(BuildContext context) {
+
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
@@ -27,34 +27,38 @@ class AuthBody extends StatelessWidget {
             SizedBox(height: 30.h,),
             Center(
               child: Image.asset(
-                'assets/images/room.png',
+                'assets/images/room 2.png',
                 width: 292.w,
-                height: 270.h,
+                height: 260.h,
               ),
             ),
-            SizedBox(height: 36.h,),
-            RichText(
-              text: TextSpan(
-                children: <InlineSpan>[
-                  TextSpan(
-                    text: 'Bienvenue\n',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  TextSpan(
-                    text: 'Connectez-vous pour continuer',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Colors.black.withOpacity(0.4),
-                      fontSize: 20.sp,
-                    ),
-                  ),
-                ],
+            Text(
+              'S\'inscrire',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            SizedBox(height: 33.h,),
+            AppTextFormField(
+              hintText: 'Nom',
+              prefixIcon: Icon(
+                Icons.person_outline,
+                size: 24.sp,
+                color: Colors.black.withOpacity(0.4),
               ),
             ),
-            SizedBox(height: 46.h,),
+            SizedBox(height: 12.h,),
             AppTextFormField(
               hintText: 'Email',
               prefixIcon: Icon(
                 Icons.email_outlined,
+                size: 24.sp,
+                color: Colors.black.withOpacity(0.4),
+              ),
+            ),
+            SizedBox(height: 12.h,),
+            AppTextFormField(
+              hintText: 'Téléphone',
+              prefixIcon: Icon(
+                Icons.phone,
                 size: 24.sp,
                 color: Colors.black.withOpacity(0.4),
               ),
@@ -68,7 +72,7 @@ class AuthBody extends StatelessWidget {
                 color: Colors.black.withOpacity(0.4),
               ),
             ),
-            SizedBox(height: 47.h,),
+            SizedBox(height: 34.h,),
             AppElevatedButton(
               onPressed: () => print('test'),
               text: 'Se connecter',
@@ -78,17 +82,15 @@ class AuthBody extends StatelessWidget {
               text: TextSpan(
                 children: [
                   TextSpan(
-                    text: 'Vous n\'avez pas de compte ? ',
+                    text: 'Vous avez déjà un compte ? ',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Colors.black.withOpacity(0.4),
                     ),
                   ),
                   TextSpan(
                     recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        context.push(RoutePath.signUp);
-                      },
-                    text: ' S\'inscrire',
+                      ..onTap = () => context.pop(),
+                    text: ' Se connecter',
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: AppColor.purple,
                     ),
