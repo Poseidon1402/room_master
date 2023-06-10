@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:meeting_room/features/booking/presentation/booking_screen.dart';
 
 import 'core/constants/route_path.dart';
 import 'features/auth/presentation/auth_screen.dart';
@@ -20,6 +21,10 @@ class AppRouter {
       GoRoute(
         path: RoutePath.roomList,
         builder: (context, state) => const RoomListScreen(),
+      ),
+      GoRoute(
+        path: RoutePath.book,
+        builder: (context, state) => const BookingScreen(),
       ),
     ]
   );

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/constants/app_color.dart';
+import '../../../../core/constants/route_path.dart';
 
 class Room extends StatelessWidget {
 
@@ -60,7 +62,7 @@ class Room extends StatelessWidget {
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () => context.push(RoutePath.book),
                     style: OutlinedButton.styleFrom(
                       side: const BorderSide(
                         color: AppColor.purple,
