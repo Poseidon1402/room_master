@@ -20,6 +20,7 @@ class MeetingRoomApp extends StatelessWidget {
     return ScreenUtilInit(
       builder: (context, child) => MaterialApp.router(
         title: 'Za Mandresy',
+        locale: const Locale('fr'),
         theme: AppTheme.customTheme(),
         debugShowCheckedModeBanner: false,
         routerConfig: AppRouter.configurations,
@@ -29,7 +30,6 @@ class MeetingRoomApp extends StatelessWidget {
           GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: const [
-          Locale('en', ''),
           Locale('fr', ''),
         ],
       ),
