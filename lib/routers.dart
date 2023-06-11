@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:meeting_room/features/booking/presentation/booking_screen.dart';
 
 import 'core/constants/route_path.dart';
+import 'core/domain/entity/room.dart';
 import 'features/auth/presentation/auth_screen.dart';
 import 'features/room_list/presentation/room_list_screen.dart';
 import 'features/subscribe/presentation/subscribe_screen.dart';
@@ -24,7 +25,10 @@ class AppRouter {
       ),
       GoRoute(
         path: RoutePath.book,
-        builder: (context, state) => const BookingScreen(),
+        builder: (context, state) {
+          Room room = state.extra as Room;
+          return BookingScreen(room: room,);
+        },
       ),
     ]
   );

@@ -69,7 +69,7 @@ class Room extends StatelessWidget {
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   OutlinedButton(
-                    onPressed: () => context.push(RoutePath.book),
+                    onPressed: () => context.push(RoutePath.book, extra: room),
                     style: OutlinedButton.styleFrom(
                       side: const BorderSide(
                         color: AppColor.purple,

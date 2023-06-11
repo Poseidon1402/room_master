@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_color.dart';
+import '../../../core/domain/entity/room.dart';
 import 'widgets/booking_body.dart';
 
 class BookingScreen extends StatelessWidget {
-  const BookingScreen({super.key});
+  final Room room;
+
+  const BookingScreen({
+    super.key,
+    required this.room,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +33,7 @@ class BookingScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
                 TextSpan(
-                  text: 'Salle #1',
+                  text: 'Salle #${room.number}',
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],
