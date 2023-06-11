@@ -2,7 +2,7 @@ class Room {
   final int number;
   final int capacity;
   final String type;
-  final List<String> equipment;
+  final List<dynamic> equipment;
   final int price;
 
   Room({
