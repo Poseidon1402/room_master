@@ -149,7 +149,7 @@ class _AuthBodyState extends State<AuthBody> {
                           ));
                     },
                     buttonColor: state.status.isSuccess
-                        ? const Color.fromRGBO(3, 201, 169, 1)
+                        ? AppColor.green
                         : AppColor.purple,
                     text: Builder(
                       builder: (context) {
