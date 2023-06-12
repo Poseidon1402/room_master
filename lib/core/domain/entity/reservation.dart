@@ -3,7 +3,7 @@ import 'room.dart';
 class Reservation {
   final Room room;
   final String user;
-  final DateTime date;
+  final String date;
   final String time;
 
   Reservation({
@@ -21,7 +21,7 @@ class Reservation {
       );
 
   Map<String, dynamic> toJson() => {
-        'room': room,
+        'room': room.toJson(),
         'date': date,
         'user': user,
         'time': time,

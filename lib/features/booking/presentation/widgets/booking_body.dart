@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -6,8 +8,10 @@ import 'package:meeting_room/core/domain/entity/room.dart';
 import 'package:time_range_picker/time_range_picker.dart';
 
 import '../../../../core/constants/app_color.dart';
+import '../../../../core/domain/entity/reservation.dart';
 import '../../../../core/presentation/components/app_elevated_button.dart';
 import '../../../../core/presentation/components/app_text_form_field.dart';
+import '../bloc/reservation_bloc.dart';
 
 class BookingBody extends StatefulWidget {
   final Room room;
@@ -79,7 +83,18 @@ class _BookingBodyState extends State<BookingBody> {
             ),
             const Spacer(),
             AppElevatedButton(
-              onPressed: () => print('test'),
+              onPressed: () {
+                context.read<ReservationBloc>().add(
+                  ReservationInsertEvent(
+                    Reservation(
+                      room: widget.room,
+                      date: dateController.text,
+                      user: FirebaseAuth.instance.currentUser?.email as String,
+                      time: timeController.text,
+                    )
+                  )
+                );
+              },
               text: Text(
                 'Confirmer',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(

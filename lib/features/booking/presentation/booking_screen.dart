@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_color.dart';
 import '../../../core/domain/entity/room.dart';
+import 'bloc/reservation_bloc.dart';
 import 'widgets/booking_body.dart';
 
 class BookingScreen extends StatelessWidget {
@@ -43,7 +45,10 @@ class BookingScreen extends StatelessWidget {
           backgroundColor: AppColor.white1,
         ),
         backgroundColor: AppColor.white1,
-        body: BookingBody(room: room),
+        body: BlocProvider(
+          create: (context) => ReservationBloc(),
+          child: BookingBody(room: room),
+        ),
       ),
     );
   }

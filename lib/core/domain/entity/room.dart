@@ -20,4 +20,12 @@ class Room {
     type: json['type'],
     price: json['price'],
   );
+
+  Map<String, dynamic> toJson() => {
+    'number': number,
+    'capacity': capacity,
+    'equipment': equipment,
+    'type': type,
+    'price': price,
+  };
 }
