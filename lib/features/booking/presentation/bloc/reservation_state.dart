@@ -1,21 +1,22 @@
 part of 'reservation_bloc.dart';
 
-class ReservationInsertionState {
+class ReservationInsertionState extends Equatable {
   final LoadStatus status;
 
-  ReservationInsertionState({
+  const ReservationInsertionState({
     required this.status,
   });
 
-  factory ReservationInsertionState.initial() => ReservationInsertionState(status: LoadStatus.initial);
+  const ReservationInsertionState.initial() : this(status: LoadStatus.initial);
 
-  factory ReservationInsertionState.loading() => ReservationInsertionState(status: LoadStatus.loading);
+  const ReservationInsertionState.loading() : this(status: LoadStatus.loading);
 
-  factory ReservationInsertionState.success() => ReservationInsertionState(
-      status: LoadStatus.success,
-  );
+  const ReservationInsertionState.success() : this(status: LoadStatus.success,);
 
-  factory ReservationInsertionState.error() => ReservationInsertionState(status: LoadStatus.error);
+  const ReservationInsertionState.error() : this(status: LoadStatus.error);
 
-  factory ReservationInsertionState.networkError() => ReservationInsertionState(status: LoadStatus.networkError);
+  const ReservationInsertionState.networkError() : this(status: LoadStatus.networkError);
+
+  @override
+  List<Object?> get props => [status];
 }

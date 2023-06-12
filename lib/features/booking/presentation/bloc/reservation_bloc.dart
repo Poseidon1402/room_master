@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 
 import '../../../../core/data/repository/reservation_repository.dart';
 import '../../../../core/enums/load_status.dart';
@@ -10,19 +13,22 @@ part 'reservation_event.dart';
 class ReservationBloc extends Bloc<ReservationEvent, ReservationInsertionState> {
   final ReservationRepository _reservationRepository = ReservationRepository();
 
-  ReservationBloc(): super(ReservationInsertionState.initial()) {
+  ReservationBloc(): super(const ReservationInsertionState.initial()) {
     on<ReservationInsertEvent>(_mapReservationInsertEventToState);
   }
 
   void _mapReservationInsertEventToState(
     ReservationInsertEvent event, Emitter<ReservationInsertionState> emit
   ) async {
-    emit(ReservationInsertionState.loading());
+
     try {
-      _reservationRepository.insertReservation(event.reservation.toJson());
-      emit(ReservationInsertionState.success());
+      emit(const ReservationInsertionState.loading());
+      await _reservationRepository.insertReservation(event.reservation.toJson());
+      emit(const ReservationInsertionState.success());
+    } on SocketException {
+      emit(const ReservationInsertionState.networkError());
     } catch (e) {
-      emit(ReservationInsertionState.error());
+      emit(const ReservationInsertionState.error());
     }
   }
 }
