@@ -14,8 +14,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthEventLogin>(_mapLoginEventToState);
   }
 
-  Stream<AuthState> _mapLoginEventToState(
-      AuthEventLogin event, Emitter<AuthState> emit) async* {
+  void _mapLoginEventToState(
+      AuthEventLogin event, Emitter<AuthState> emit) async {
     emit(const AuthState.loading());
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(

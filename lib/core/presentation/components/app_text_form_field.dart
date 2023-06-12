@@ -5,7 +5,10 @@ class AppTextFormField extends StatelessWidget {
   final TextEditingController? controller;
   final String? hintText;
   final String suffixText;
+  final TextInputType? type;
+  final bool obscureText;
   final Widget? prefixIcon;
+  final Widget? suffixIcon;
   final bool showCursor;
   final bool readOnly;
   final Function()? onTap;
@@ -16,7 +19,10 @@ class AppTextFormField extends StatelessWidget {
     this.hintText,
     this.suffixText = '',
     this.prefixIcon,
+    this.suffixIcon,
     this.onTap,
+    this.type,
+    this.obscureText = false,
     this.showCursor = true,
     this.readOnly = false,
   });
@@ -27,9 +33,14 @@ class AppTextFormField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       onTap: onTap,
+      obscureText: obscureText,
+      keyboardType: type,
       showCursor: showCursor,
       readOnly: readOnly,
       decoration: InputDecoration(
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 10.w,
+        ),
         hintText: hintText,
         hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
           color: Colors.black.withOpacity(0.4),
@@ -43,6 +54,7 @@ class AppTextFormField extends StatelessWidget {
           borderSide: BorderSide.none,
           borderRadius: BorderRadius.circular(12.r),
         ),
+        suffixIcon: suffixIcon,
       ),
     );
   }

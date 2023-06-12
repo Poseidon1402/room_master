@@ -2,9 +2,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:meeting_room/core/enums/load_status.dart';
 import 'package:meeting_room/core/presentation/components/app_text_form_field.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../../../../core/constants/app_color.dart';
 import '../../../../core/constants/route_path.dart';
@@ -20,6 +22,7 @@ class AuthBody extends StatefulWidget {
 
 class _AuthBodyState extends State<AuthBody> {
   late TextEditingController _emailController;
+  bool _isPasswordVisible = false;
   late TextEditingController _passwordController;
 
   @override
@@ -40,16 +43,17 @@ class _AuthBodyState extends State<AuthBody> {
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        if(state.status.isSuccess) {
+        if (state.status.isSuccess) {
+          Future.delayed(const Duration(milliseconds: 2000));
           context.go(RoutePath.roomList);
-        } else if(state.status.isError) {
+        } else if (state.status.isError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
                 state.error as String,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: Colors.white,
-                ),
+                      color: Colors.white,
+                    ),
                 textAlign: TextAlign.center,
               ),
               backgroundColor: const Color.fromRGBO(238, 75, 43, 1),
@@ -67,7 +71,9 @@ class _AuthBodyState extends State<AuthBody> {
           ),
           child: ListView(
             children: [
-              SizedBox(height: 30.h,),
+              SizedBox(
+                height: 30.h,
+              ),
               Center(
                 child: Image.asset(
                   'assets/images/room.png',
@@ -75,7 +81,9 @@ class _AuthBodyState extends State<AuthBody> {
                   height: 270.h,
                 ),
               ),
-              SizedBox(height: 36.h,),
+              SizedBox(
+                height: 36.h,
+              ),
               RichText(
                 text: TextSpan(
                   children: <InlineSpan>[
@@ -86,14 +94,16 @@ class _AuthBodyState extends State<AuthBody> {
                     TextSpan(
                       text: 'Connectez-vous pour continuer',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Colors.black.withOpacity(0.4),
-                        fontSize: 20.sp,
-                      ),
+                            color: Colors.black.withOpacity(0.4),
+                            fontSize: 20.sp,
+                          ),
                     ),
                   ],
                 ),
               ),
-              SizedBox(height: 46.h,),
+              SizedBox(
+                height: 46.h,
+              ),
               AppTextFormField(
                 controller: _emailController,
                 hintText: 'Email',
@@ -104,50 +114,81 @@ class _AuthBodyState extends State<AuthBody> {
                   color: Colors.black.withOpacity(0.4),
                 ),
               ),
-              SizedBox(height: 12.h,),
+              SizedBox(
+                height: 12.h,
+              ),
               AppTextFormField(
                 controller: _passwordController,
                 hintText: 'Mot de passe',
-                obscureText: true,
+                obscureText: _isPasswordVisible,
                 prefixIcon: Icon(
                   Icons.lock_outline,
                   size: 24.sp,
                   color: Colors.black.withOpacity(0.4),
                 ),
                 suffixIcon: InkWell(
-                  onTap: () {},
+                  onTap: () => setState(() => _isPasswordVisible = !_isPasswordVisible),
                   child: Icon(
-                    Icons.remove_red_eye_outlined,
+                    _isPasswordVisible
+                        ? FontAwesomeIcons.eyeSlash
+                        : FontAwesomeIcons.eye,
                     size: 24.sp,
                     color: Colors.black.withOpacity(0.4),
                   ),
                 ),
               ),
-              SizedBox(height: 47.h,),
-              AppElevatedButton(
-                onPressed: () {
-                  context.read<AuthBloc>().add(AuthEventLogin(
-                    email: _emailController.text,
-                    password: _passwordController.text,
-                  ));
-                },
-                text: Text(
-                  'Se connecter',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: Colors.white,
-                    fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize,
-                  ),
-                ),
+              SizedBox(
+                height: 47.h,
               ),
-              SizedBox(height: 95.h,),
+              BlocBuilder<AuthBloc, AuthState>(
+                builder: (context, state) => AppElevatedButton(
+                    onPressed: () {
+                      context.read<AuthBloc>().add(AuthEventLogin(
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                          ));
+                    },
+                    buttonColor: state.status.isSuccess
+                        ? const Color.fromRGBO(3, 201, 169, 1)
+                        : AppColor.purple,
+                    text: Builder(
+                      builder: (context) {
+                        if (state.status.isLoading) {
+                          return SpinKitThreeBounce(
+                            color: Colors.white,
+                            size: 20.sp,
+                          );
+                        }
+
+                        if (state.status.isSuccess) {
+                          return Icon(
+                            Icons.check_circle_outline,
+                            color: Colors.white,
+                            size: 30.sp,
+                          );
+                        }
+
+                        return Text(
+                          'Se connecter',
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: Colors.white,
+                                  ),
+                        );
+                      },
+                    )),
+              ),
+              SizedBox(
+                height: 95.h,
+              ),
               RichText(
                 text: TextSpan(
                   children: [
                     TextSpan(
                       text: 'Vous n\'avez pas de compte ? ',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Colors.black.withOpacity(0.4),
-                      ),
+                            color: Colors.black.withOpacity(0.4),
+                          ),
                     ),
                     TextSpan(
                       recognizer: TapGestureRecognizer()
@@ -156,8 +197,8 @@ class _AuthBodyState extends State<AuthBody> {
                         },
                       text: ' S\'inscrire',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColor.purple,
-                      ),
+                            color: AppColor.purple,
+                          ),
                     ),
                   ],
                 ),
