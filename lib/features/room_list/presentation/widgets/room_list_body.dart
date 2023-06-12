@@ -16,8 +16,10 @@ class RoomListBody extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
       child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 20.w,
+        padding: EdgeInsets.only(
+          left: 20.w,
+          right: 20.w,
+          top: 20.h,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
