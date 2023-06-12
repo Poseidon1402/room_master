@@ -77,7 +77,13 @@ class _BookingBodyState extends State<BookingBody> {
             const Spacer(),
             AppElevatedButton(
               onPressed: () => print('test'),
-              text: 'Confirmer',
+              text: Text(
+                'Confirmer',
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: Colors.white,
+                  fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize,
+                ),
+              ),
             ),
           ],
         ),

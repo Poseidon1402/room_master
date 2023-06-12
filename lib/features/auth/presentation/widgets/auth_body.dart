@@ -1,102 +1,169 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:meeting_room/core/enums/load_status.dart';
 import 'package:meeting_room/core/presentation/components/app_text_form_field.dart';
 
 import '../../../../core/constants/app_color.dart';
 import '../../../../core/constants/route_path.dart';
+import '../../../../core/presentation/bloc/auth/auth_bloc.dart';
 import '../../../../core/presentation/components/app_elevated_button.dart';
 
-class AuthBody extends StatelessWidget {
+class AuthBody extends StatefulWidget {
   const AuthBody({super.key});
 
   @override
+  State<AuthBody> createState() => _AuthBodyState();
+}
+
+class _AuthBodyState extends State<AuthBody> {
+  late TextEditingController _emailController;
+  late TextEditingController _passwordController;
+
+  @override
+  void initState() {
+    _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 34.w,
-          vertical: 35.h,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 30.h,),
-            Center(
-              child: Image.asset(
-                'assets/images/room.png',
-                width: 292.w,
-                height: 270.h,
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if(state.status.isSuccess) {
+          context.go(RoutePath.roomList);
+        } else if(state.status.isError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                state.error as String,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Colors.white,
+                ),
+                textAlign: TextAlign.center,
               ),
+              backgroundColor: const Color.fromRGBO(238, 75, 43, 1),
             ),
-            SizedBox(height: 36.h,),
-            RichText(
-              text: TextSpan(
-                children: <InlineSpan>[
-                  TextSpan(
-                    text: 'Bienvenue\n',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  TextSpan(
-                    text: 'Connectez-vous pour continuer',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      color: Colors.black.withOpacity(0.4),
-                      fontSize: 20.sp,
+          );
+        }
+      },
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: 34.w,
+            vertical: 35.h,
+          ),
+          child: ListView(
+            children: [
+              SizedBox(height: 30.h,),
+              Center(
+                child: Image.asset(
+                  'assets/images/room.png',
+                  width: 292.w,
+                  height: 270.h,
+                ),
+              ),
+              SizedBox(height: 36.h,),
+              RichText(
+                text: TextSpan(
+                  children: <InlineSpan>[
+                    TextSpan(
+                      text: 'Bienvenue\n',
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 46.h,),
-            AppTextFormField(
-              hintText: 'Email',
-              prefixIcon: Icon(
-                Icons.email_outlined,
-                size: 24.sp,
-                color: Colors.black.withOpacity(0.4),
-              ),
-            ),
-            SizedBox(height: 12.h,),
-            AppTextFormField(
-              hintText: 'Mot de passe',
-              prefixIcon: Icon(
-                Icons.lock_outline,
-                size: 24.sp,
-                color: Colors.black.withOpacity(0.4),
-              ),
-            ),
-            SizedBox(height: 47.h,),
-            AppElevatedButton(
-              onPressed: () => context.go(RoutePath.roomList),
-              text: 'Se connecter',
-            ),
-            const Spacer(),
-            RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'Vous n\'avez pas de compte ? ',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Colors.black.withOpacity(0.4),
+                    TextSpan(
+                      text: 'Connectez-vous pour continuer',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        color: Colors.black.withOpacity(0.4),
+                        fontSize: 20.sp,
+                      ),
                     ),
-                  ),
-                  TextSpan(
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        context.push(RoutePath.signUp);
-                      },
-                    text: ' S\'inscrire',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColor.purple,
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+              SizedBox(height: 46.h,),
+              AppTextFormField(
+                controller: _emailController,
+                hintText: 'Email',
+                type: TextInputType.emailAddress,
+                prefixIcon: Icon(
+                  Icons.email_outlined,
+                  size: 24.sp,
+                  color: Colors.black.withOpacity(0.4),
+                ),
+              ),
+              SizedBox(height: 12.h,),
+              AppTextFormField(
+                controller: _passwordController,
+                hintText: 'Mot de passe',
+                obscureText: true,
+                prefixIcon: Icon(
+                  Icons.lock_outline,
+                  size: 24.sp,
+                  color: Colors.black.withOpacity(0.4),
+                ),
+                suffixIcon: InkWell(
+                  onTap: () {},
+                  child: Icon(
+                    Icons.remove_red_eye_outlined,
+                    size: 24.sp,
+                    color: Colors.black.withOpacity(0.4),
+                  ),
+                ),
+              ),
+              SizedBox(height: 47.h,),
+              AppElevatedButton(
+                onPressed: () {
+                  context.read<AuthBloc>().add(AuthEventLogin(
+                    email: _emailController.text,
+                    password: _passwordController.text,
+                  ));
+                },
+                text: Text(
+                  'Se connecter',
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: Colors.white,
+                    fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize,
+                  ),
+                ),
+              ),
+              SizedBox(height: 95.h,),
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'Vous n\'avez pas de compte ? ',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Colors.black.withOpacity(0.4),
+                      ),
+                    ),
+                    TextSpan(
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          context.push(RoutePath.signUp);
+                        },
+                      text: ' S\'inscrire',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColor.purple,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

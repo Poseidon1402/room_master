@@ -75,7 +75,13 @@ class SubscribeBody extends StatelessWidget {
             SizedBox(height: 34.h,),
             AppElevatedButton(
               onPressed: () => print('test'),
-              text: 'Se connecter',
+              text: Text(
+                'S\'inscrire',
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  color: Colors.white,
+                  fontSize: Theme.of(context).textTheme.bodyLarge?.fontSize,
+                ),
+              ),
             ),
             const Spacer(),
             RichText(

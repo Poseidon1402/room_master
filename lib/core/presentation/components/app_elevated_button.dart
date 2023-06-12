@@ -5,10 +5,8 @@ import '../../constants/app_color.dart';
 
 class AppElevatedButton extends StatelessWidget {
   final Function()? onPressed;
-  final String text;
+  final Widget? text;
   final Color buttonColor;
-  final double fontSize;
-  final Color fontColor;
   final double borderRadius;
   final double width;
   final double height;
@@ -17,9 +15,7 @@ class AppElevatedButton extends StatelessWidget {
     super.key,
     this.onPressed,
     this.buttonColor = AppColor.purple,
-    this.text = '',
-    this.fontSize = 16,
-    this.fontColor = Colors.white,
+    this.text,
     this.borderRadius = 12,
     this.width = double.maxFinite,
     this.height = 58,
@@ -37,13 +33,7 @@ class AppElevatedButton extends StatelessWidget {
         ),
         minimumSize: Size(width.w, height.h),
       ),
-      child: Text(
-        text,
-        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-          color: fontColor,
-          fontSize: fontSize,
-        ),
-      ),
+      child: text
     );
   }
 }
