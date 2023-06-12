@@ -43,7 +43,7 @@ class BookingScreen extends StatelessWidget {
           backgroundColor: AppColor.white1,
         ),
         backgroundColor: AppColor.white1,
-        body: const BookingBody(),
+        body: BookingBody(room: room),
       ),
     );
   }

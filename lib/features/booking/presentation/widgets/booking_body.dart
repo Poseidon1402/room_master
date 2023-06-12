@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:meeting_room/core/domain/entity/room.dart';
 import 'package:time_range_picker/time_range_picker.dart';
 
 import '../../../../core/constants/app_color.dart';
@@ -9,7 +10,9 @@ import '../../../../core/presentation/components/app_elevated_button.dart';
 import '../../../../core/presentation/components/app_text_form_field.dart';
 
 class BookingBody extends StatefulWidget {
-  const BookingBody({super.key});
+  final Room room;
+
+  const BookingBody({super.key, required this.room});
 
   @override
   State<BookingBody> createState() => _BookingBodyState();
