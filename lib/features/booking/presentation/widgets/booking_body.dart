@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:meeting_room/core/domain/entity/room.dart';
 import 'package:meeting_room/core/enums/load_status.dart';
 import 'package:time_range_picker/time_range_picker.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../../core/constants/app_color.dart';
 import '../../../../core/domain/entity/reservation.dart';
@@ -59,6 +61,7 @@ class _BookingBodyState extends State<BookingBody> {
               backgroundColor: AppColor.green,
             ),
           );
+          _buildBottomSheetWithQrCode();
         } else if (state.status.isError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -143,7 +146,7 @@ class _BookingBodyState extends State<BookingBody> {
                                           ?.fontSize,
                                     ),
                           )),
-              )
+              ),
             ],
           ),
         ),
@@ -213,5 +216,58 @@ class _BookingBodyState extends State<BookingBody> {
     final format = DateFormat.Hm('fr_FR');
     final dateTime = DateTime(0, 1, 1, time.hour, time.minute);
     return format.format(dateTime);
+  }
+
+  void _buildBottomSheetWithQrCode() {
+
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) {
+        return Container(
+          padding: EdgeInsets.symmetric(
+            vertical: 10.h,
+          ),
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height / 2,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15.r),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'Réservation\n',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    TextSpan(
+                      text: 'Salle: ${widget.room.number}\n',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    TextSpan(
+                      text: 'Date: ${dateController.text}\n',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    TextSpan(
+                      text: 'Heure: ${timeController.text}',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ]
+                ),
+              ),
+              const Spacer(),
+              QrImage(
+                size: 300,
+                data: 'My qr code',
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }
