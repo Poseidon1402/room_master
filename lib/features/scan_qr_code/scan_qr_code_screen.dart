@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../core/constants/app_color.dart';
+import 'widgets/scan_qr_code_body.dart';
+
 class ScanQrCodeScreen extends StatelessWidget {
   const ScanQrCodeScreen({super.key});
 
@@ -7,11 +10,13 @@ class ScanQrCodeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Scan QR Code'),
+        elevation: 0.0,
+        backgroundColor: AppColor.white1,
+        leading: Image.asset(
+          'assets/logo/E-room sans nom.png',
+        ),
       ),
-      body: Center(
-        child: Text('Scan QR Code'),
-      ),
+      body: const ScanQrCodeBody(),
     );
   }
 }
