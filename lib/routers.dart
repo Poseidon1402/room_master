@@ -5,11 +5,12 @@ import 'core/constants/route_path.dart';
 import 'core/domain/entity/room.dart';
 import 'features/auth/presentation/auth_screen.dart';
 import 'features/room_list/presentation/room_list_screen.dart';
+import 'features/scan_qr_code/scan_qr_code_screen.dart';
 import 'features/subscribe/presentation/subscribe_screen.dart';
 
 class AppRouter {
   static GoRouter configurations = GoRouter(
-    initialLocation: RoutePath.signIn,
+    initialLocation: RoutePath.qrScanner,
     routes: [
       GoRoute(
         path: RoutePath.signIn,
@@ -30,6 +31,10 @@ class AppRouter {
           return BookingScreen(room: room,);
         },
       ),
+      GoRoute(
+        path: RoutePath.qrScanner,
+        builder: (context, state) => const ScanQrCodeScreen(),
+      )
     ]
   );
 }
