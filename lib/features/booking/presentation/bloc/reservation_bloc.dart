@@ -23,8 +23,8 @@ class ReservationBloc extends Bloc<ReservationEvent, ReservationInsertionState> 
 
     try {
       emit(const ReservationInsertionState.loading());
-      await _reservationRepository.insertReservation(event.reservation.toJson());
-      emit(const ReservationInsertionState.success());
+      final id = await _reservationRepository.insertReservation(event.reservation.toJson());
+      emit(ReservationInsertionState.success(id));
     } on SocketException {
       emit(const ReservationInsertionState.networkError());
     } catch (e) {

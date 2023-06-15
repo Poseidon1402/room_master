@@ -49,6 +49,7 @@ class _BookingBodyState extends State<BookingBody> {
     return BlocListener<ReservationBloc, ReservationInsertionState>(
       listener: (context, state) {
         if (state.status.isSuccess) {
+          _buildBottomSheetWithQrCode(state.reservationId!);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
@@ -61,7 +62,6 @@ class _BookingBodyState extends State<BookingBody> {
               backgroundColor: AppColor.green,
             ),
           );
-          _buildBottomSheetWithQrCode();
         } else if (state.status.isError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -218,7 +218,7 @@ class _BookingBodyState extends State<BookingBody> {
     return format.format(dateTime);
   }
 
-  void _buildBottomSheetWithQrCode() {
+  void _buildBottomSheetWithQrCode(String reservationId) {
 
     showCupertinoModalPopup(
       context: context,
@@ -262,7 +262,7 @@ class _BookingBodyState extends State<BookingBody> {
               const Spacer(),
               QrImage(
                 size: 300,
-                data: 'My qr code',
+                data: reservationId,
               ),
             ],
           ),
