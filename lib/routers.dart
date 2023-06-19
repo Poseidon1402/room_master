@@ -10,7 +10,7 @@ import 'features/subscribe/presentation/subscribe_screen.dart';
 
 class AppRouter {
   static GoRouter configurations = GoRouter(
-    initialLocation: RoutePath.qrScanner,
+    initialLocation: RoutePath.signIn,
     routes: [
       GoRoute(
         path: RoutePath.signIn,
