@@ -223,48 +223,66 @@ class _BookingBodyState extends State<BookingBody> {
     showCupertinoModalPopup(
       context: context,
       builder: (context) {
-        return Container(
-          padding: EdgeInsets.symmetric(
-            vertical: 10.h,
-          ),
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height / 2,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(15.r),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'Réservation\n',
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                    TextSpan(
-                      text: 'Salle: ${widget.room.number}\n',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    TextSpan(
-                      text: 'Date: ${dateController.text}\n',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    TextSpan(
-                      text: 'Heure: ${timeController.text}',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                  ]
+        return Card(
+          elevation: 0.0,
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              vertical: 10.h,
+            ),
+            width: MediaQuery.of(context).size.width,
+            height: 2 * MediaQuery.of(context).size.height / 3,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15.r),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: 'Excellent ! Votre reservation s\'est déroulée avec succès\n',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                      TextSpan(
+                        text: 'Voici votre qr code pour la réservation\n',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ]
+                  ),
                 ),
-              ),
-              const Spacer(),
-              QrImage(
-                size: 300,
-                data: reservationId,
-              ),
-            ],
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 2,
+                  child: Column(
+                    children: [
+                      QrImage(
+                        size: 200,
+                        data: reservationId,
+                      ),
+                      InkWell(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            const Icon(
+                              Icons.download,
+                              color: Colors.black87,
+                            ),
+                            Text(
+                              'Exporter',
+                              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                color: const Color(0xFF1E1E1E),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                ),
+              ],
+            ),
           ),
         );
       },
