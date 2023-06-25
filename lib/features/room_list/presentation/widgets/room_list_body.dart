@@ -7,8 +7,15 @@ import '../bloc/room_bloc.dart';
 import 'room.dart';
 import 'room_category_filter_chip.dart';
 
-class RoomListBody extends StatelessWidget {
+class RoomListBody extends StatefulWidget {
   const RoomListBody({super.key});
+
+  @override
+  State<RoomListBody> createState() => _RoomListBodyState();
+}
+
+class _RoomListBodyState extends State<RoomListBody> {
+  String _selectedCategory = 'Tous';
 
   @override
   Widget build(BuildContext context) {
@@ -35,18 +42,18 @@ class RoomListBody extends StatelessWidget {
               children: [
                 RoomCategoryFilterChip(
                   text: 'Tous',
-                  onSelected: (value) => print('test'),
-                  isSelected: true,
+                  onSelected: (value) => setState(() => _selectedCategory = 'Tous'),
+                  isSelected: _selectedCategory == 'Tous',
                 ),
                 RoomCategoryFilterChip(
                   text: 'Salle de réunion',
-                  onSelected: (value) => print('test'),
-                  isSelected: false,
+                  onSelected: (value) => setState(() => _selectedCategory = 'Réunion'),
+                  isSelected: _selectedCategory == 'Réunion',
                 ),
                 RoomCategoryFilterChip(
                   text: 'Salle de fête',
-                  onSelected: (value) => print('test'),
-                  isSelected: false,
+                  onSelected: (value) => setState(() => _selectedCategory = 'fête'),
+                  isSelected: _selectedCategory == 'fête',
                 ),
               ],
             ),
@@ -59,12 +66,14 @@ class RoomListBody extends StatelessWidget {
                 );
               }
 
+              final rooms = _selectedCategory == 'Tous' ? state.rooms : state.rooms?.where((room) => room.type == _selectedCategory).toList();
+
               return Expanded(
                 child: ListView.builder(
-                  itemCount: state.rooms?.length,
+                  itemCount: rooms?.length,
                   itemBuilder: (context, index) {
                     return Room(
-                      room: state.rooms![index],
+                      room: rooms![index],
                     );
                   },
                 ),
