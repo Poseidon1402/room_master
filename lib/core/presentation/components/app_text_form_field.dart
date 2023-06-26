@@ -12,6 +12,8 @@ class AppTextFormField extends StatelessWidget {
   final bool showCursor;
   final bool readOnly;
   final Function()? onTap;
+  final Function(String)? onChange;
+  final String? Function(String?)? validator;
 
   const AppTextFormField({
     super.key,
@@ -22,6 +24,8 @@ class AppTextFormField extends StatelessWidget {
     this.suffixIcon,
     this.onTap,
     this.type,
+    this.onChange,
+    this.validator,
     this.obscureText = false,
     this.showCursor = true,
     this.readOnly = false,
@@ -37,6 +41,8 @@ class AppTextFormField extends StatelessWidget {
       keyboardType: type,
       showCursor: showCursor,
       readOnly: readOnly,
+      validator: validator,
+      onChanged: onChange,
       decoration: InputDecoration(
         contentPadding: EdgeInsets.symmetric(
           horizontal: 10.w,

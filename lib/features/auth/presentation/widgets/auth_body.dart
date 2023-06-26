@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:meeting_room/core/enums/load_status.dart';
 import 'package:meeting_room/core/presentation/components/app_text_form_field.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:form_validator/form_validator.dart';
 
 import '../../../../core/constants/app_color.dart';
 import '../../../../core/constants/route_path.dart';
@@ -21,6 +22,7 @@ class AuthBody extends StatefulWidget {
 }
 
 class _AuthBodyState extends State<AuthBody> {
+  final _formKey = GlobalKey<FormState>();
   late TextEditingController _emailController;
   bool _isPasswordVisible = false;
   late TextEditingController _passwordController;
@@ -61,149 +63,163 @@ class _AuthBodyState extends State<AuthBody> {
           );
         }
       },
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 34.w,
-            vertical: 35.h,
-          ),
-          child: ListView(
-            children: [
-              SizedBox(
-                height: 30.h,
-              ),
-              Center(
-                child: Image.asset(
-                  'assets/images/room.png',
-                  width: 292.w,
-                  height: 270.h,
+      child: Form(
+        key: _formKey,
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 34.w,
+              vertical: 35.h,
+            ),
+            child: ListView(
+              children: [
+                SizedBox(
+                  height: 30.h,
                 ),
-              ),
-              SizedBox(
-                height: 36.h,
-              ),
-              RichText(
-                text: TextSpan(
-                  children: <InlineSpan>[
-                    TextSpan(
-                      text: 'Bienvenue\n',
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    TextSpan(
-                      text: 'Connectez-vous pour continuer',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            color: Colors.black.withOpacity(0.4),
-                            fontSize: 20.sp,
-                          ),
-                    ),
-                  ],
+                Center(
+                  child: Image.asset(
+                    'assets/images/room.png',
+                    width: 292.w,
+                    height: 270.h,
+                  ),
                 ),
-              ),
-              SizedBox(
-                height: 46.h,
-              ),
-              AppTextFormField(
-                controller: _emailController,
-                hintText: 'Email',
-                type: TextInputType.emailAddress,
-                prefixIcon: Icon(
-                  Icons.email_outlined,
-                  size: 24.sp,
-                  color: Colors.black.withOpacity(0.4),
+                SizedBox(
+                  height: 36.h,
                 ),
-              ),
-              SizedBox(
-                height: 12.h,
-              ),
-              AppTextFormField(
-                controller: _passwordController,
-                hintText: 'Mot de passe',
-                obscureText: _isPasswordVisible,
-                prefixIcon: Icon(
-                  Icons.lock_outline,
-                  size: 24.sp,
-                  color: Colors.black.withOpacity(0.4),
+                RichText(
+                  text: TextSpan(
+                    children: <InlineSpan>[
+                      TextSpan(
+                        text: 'Bienvenue\n',
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                      TextSpan(
+                        text: 'Connectez-vous pour continuer',
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              color: Colors.black.withOpacity(0.4),
+                              fontSize: 20.sp,
+                            ),
+                      ),
+                    ],
+                  ),
                 ),
-                suffixIcon: InkWell(
-                  onTap: () => setState(() => _isPasswordVisible = !_isPasswordVisible),
-                  child: Icon(
-                    _isPasswordVisible
-                        ? FontAwesomeIcons.eyeSlash
-                        : FontAwesomeIcons.eye,
+                SizedBox(
+                  height: 46.h,
+                ),
+                AppTextFormField(
+                  controller: _emailController,
+                  hintText: 'Email',
+                  type: TextInputType.emailAddress,
+                  validator: ValidationBuilder(localeName: 'fr')
+                      .required()
+                      .email()
+                      .build(),
+                  onChange: (value) => _formKey.currentState!.validate(),
+                  prefixIcon: Icon(
+                    Icons.email_outlined,
                     size: 24.sp,
                     color: Colors.black.withOpacity(0.4),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 47.h,
-              ),
-              BlocBuilder<AuthBloc, AuthState>(
-                builder: (context, state) => AppElevatedButton(
-                    onPressed: () {
-                      context.read<AuthBloc>().add(AuthEventLogin(
-                            email: _emailController.text,
-                            password: _passwordController.text,
-                          ));
-                    },
-                    buttonColor: state.status.isSuccess
-                        ? AppColor.green
-                        : AppColor.purple,
-                    text: Builder(
-                      builder: (context) {
-                        if (state.status.isLoading) {
-                          return SpinKitThreeBounce(
-                            color: Colors.white,
-                            size: 20.sp,
-                          );
-                        }
-
-                        if (state.status.isSuccess) {
-                          return Icon(
-                            Icons.check_circle_outline,
-                            color: Colors.white,
-                            size: 30.sp,
-                          );
-                        }
-
-                        return Text(
-                          'Se connecter',
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: Colors.white,
-                                  ),
-                        );
-                      },
-                    )),
-              ),
-              SizedBox(
-                height: 95.h,
-              ),
-              RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'Vous n\'avez pas de compte ? ',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.black.withOpacity(0.4),
-                          ),
-                    ),
-                    TextSpan(
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          context.push(RoutePath.signUp);
-                        },
-                      text: ' S\'inscrire',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColor.purple,
-                          ),
-                    ),
-                  ],
+                SizedBox(
+                  height: 12.h,
                 ),
-              ),
-            ],
+                AppTextFormField(
+                  controller: _passwordController,
+                  hintText: 'Mot de passe',
+                  obscureText: !_isPasswordVisible,
+                  prefixIcon: Icon(
+                    Icons.lock_outline,
+                    size: 24.sp,
+                    color: Colors.black.withOpacity(0.4),
+                  ),
+                  validator: ValidationBuilder(localeName: 'fr')
+                      .required()
+                      .minLength(8)
+                      .build(),
+                  onChange: (value) => _formKey.currentState!.validate(),
+                  suffixIcon: InkWell(
+                    onTap: () => setState(
+                        () => _isPasswordVisible = !_isPasswordVisible),
+                    child: Icon(
+                      _isPasswordVisible
+                          ? FontAwesomeIcons.eyeSlash
+                          : FontAwesomeIcons.eye,
+                      size: 24.sp,
+                      color: Colors.black.withOpacity(0.4),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 47.h,
+                ),
+                BlocBuilder<AuthBloc, AuthState>(
+                  builder: (context, state) => AppElevatedButton(
+                      onPressed: () {
+                        context.read<AuthBloc>().add(AuthEventLogin(
+                              email: _emailController.text,
+                              password: _passwordController.text,
+                            ));
+                      },
+                      buttonColor: state.status.isSuccess
+                          ? AppColor.green
+                          : AppColor.purple,
+                      text: Builder(
+                        builder: (context) {
+                          if (state.status.isLoading) {
+                            return SpinKitThreeBounce(
+                              color: Colors.white,
+                              size: 20.sp,
+                            );
+                          }
+
+                          if (state.status.isSuccess) {
+                            return Icon(
+                              Icons.check_circle_outline,
+                              color: Colors.white,
+                              size: 30.sp,
+                            );
+                          }
+
+                          return Text(
+                            'Se connecter',
+                            style:
+                                Theme.of(context).textTheme.bodySmall?.copyWith(
+                                      color: Colors.white,
+                                    ),
+                          );
+                        },
+                      )),
+                ),
+                SizedBox(
+                  height: 95.h,
+                ),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: 'Vous n\'avez pas de compte ? ',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: Colors.black.withOpacity(0.4),
+                            ),
+                      ),
+                      TextSpan(
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            context.push(RoutePath.signUp);
+                          },
+                        text: ' S\'inscrire',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: AppColor.purple,
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
