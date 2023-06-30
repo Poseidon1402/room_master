@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/constants/app_color.dart';
+import 'widgets/my_booking_body.dart';
+
 class MyBookingScreen extends StatelessWidget {
   const MyBookingScreen({super.key});
 
@@ -15,6 +18,8 @@ class MyBookingScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         centerTitle: false,
       ),
+      backgroundColor: AppColor.white1,
+      body: const MyBookingBody(),
     );
   }
 }
