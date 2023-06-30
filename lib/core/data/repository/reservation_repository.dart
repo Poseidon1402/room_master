@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../domain/entity/reservation.dart';
 
@@ -11,7 +12,10 @@ class ReservationRepository {
   }
 
   Future<List<Reservation>> getReservations() async {
-    final docs = (await _collection.get()).docs;
+    final docs = (await _collection
+            .where('user', isEqualTo: FirebaseAuth.instance.currentUser?.email)
+            .get())
+        .docs;
 
     final List<Reservation> reservations = [];
 

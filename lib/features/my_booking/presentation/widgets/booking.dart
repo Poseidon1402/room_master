@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/constants/app_color.dart';
+import '../../../../core/domain/entity/reservation.dart';
 import '../../../../core/presentation/components/app_elevated_button.dart';
 
 class Booking extends StatelessWidget {
-  const Booking({super.key});
+  final Reservation reservation;
+
+  const Booking({
+    super.key,
+    required this.reservation,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -41,11 +47,11 @@ class Booking extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          'Room #1',
+          'Salle #${reservation.room.number}',
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         Text(
-          '8 places',
+          '${reservation.room.capacity} places',
           style: Theme.of(context).textTheme.bodyMedium,
         ),
         Row(
@@ -78,22 +84,24 @@ class Booking extends StatelessWidget {
   }
 
   Widget _buildDateAndHour(BuildContext context) {
+    final date = reservation.date.split(' ');
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          '29',
+          date[0],
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
             color: const Color.fromRGBO(250, 12, 55, 1),
             fontSize: 40.sp,
           ),
         ),
         Text(
-          'Juin 2023',
+          '${date[1]} ${date[2]}',
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         Text(
-          '21:00 - 22:00',
+          reservation.time,
           style: Theme.of(context).textTheme.bodyMedium,
         ),
       ],

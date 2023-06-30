@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../core/data/repository/reservation_repository.dart';
 import 'booking.dart';
 
 class MyBookingBody extends StatelessWidget {
@@ -13,11 +14,33 @@ class MyBookingBody extends StatelessWidget {
       padding: EdgeInsets.symmetric(
         horizontal: 13.w,
       ),
-      child: ListView.builder(
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return const Booking();
-        },
+      child: FutureBuilder(
+        future: ReservationRepository().getReservations(),
+        builder: (context, snapshot) {
+          if(snapshot.connectionState == ConnectionState.done) {
+            final reservations = snapshot.data;
+
+            if(reservations!.isEmpty) {
+              return Center(
+                child: Text(
+                  'Aucune reservation trouvée',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              );
+            }
+
+            return ListView.builder(
+              itemCount: reservations.length,
+              itemBuilder: (context, index) {
+                return Booking(reservation: reservations[index],);
+              },
+            );
+          }
+
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
       )
     );
   }
