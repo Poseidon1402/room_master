@@ -20,7 +20,7 @@ class ReservationRepository {
     final List<Reservation> reservations = [];
 
     for (var doc in docs) {
-      reservations.add(Reservation.fromJson(doc.data()));
+      reservations.add(Reservation.fromJson(doc.id, doc.data()));
     }
 
     return reservations;
