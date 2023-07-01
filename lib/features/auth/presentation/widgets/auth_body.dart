@@ -47,7 +47,9 @@ class _AuthBodyState extends State<AuthBody> {
       listener: (context, state) {
         if (state.status.isSuccess) {
           Future.delayed(const Duration(milliseconds: 2000));
-          context.go(RoutePath.roomList);
+          state.currentUser?.email == 'admin@gmail.com'
+              ? context.go(RoutePath.qrScanner)
+              : context.go(RoutePath.roomList);
         } else if (state.status.isError) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
