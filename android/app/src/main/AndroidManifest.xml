@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.aina.meeting_room">
+    <uses-permission android:name="android.permission.INTERNET" />
    <application
         android:label="meeting_room"
         android:name="${applicationName}"
