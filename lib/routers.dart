@@ -11,7 +11,7 @@ import 'features/subscribe/presentation/subscribe_screen.dart';
 
 class AppRouter {
   static GoRouter configurations = GoRouter(
-    initialLocation: RoutePath.myBooking,
+    initialLocation: RoutePath.signIn,
     routes: [
       GoRoute(
         path: RoutePath.signIn,
