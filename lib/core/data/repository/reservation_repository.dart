@@ -25,4 +25,9 @@ class ReservationRepository {
 
     return reservations;
   }
+
+  Future<Reservation> getSingleReservation(String id) async {
+    final doc = await _collection.doc(id).get();
+    return Reservation.fromJson(doc.id, doc.data()!);
+  }
 }

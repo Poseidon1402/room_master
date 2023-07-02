@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import '../../../core/constants/app_color.dart';
+import '../../../core/data/repository/reservation_repository.dart';
 
 class ScanQrCodeBody extends StatefulWidget {
   const ScanQrCodeBody({Key? key}) : super(key: key);
@@ -57,13 +59,10 @@ class _ScanQrCodeBodyState extends State<ScanQrCodeBody> {
               ),
             ),
           ),
-          Expanded(
+          const Expanded(
             flex: 1,
             child: Center(
-              child: (result != null)
-                  ? Text(
-                  'Barcode Type: ${describeEnum(result!.format)} Data: ${result!.code}')
-                  : const Text('Scannez le code'),
+              child: Text('Scannez le code'),
             ),
           ),
         ],
@@ -77,16 +76,77 @@ class _ScanQrCodeBodyState extends State<ScanQrCodeBody> {
       setState(() {
         result = scanData;
       });
-    });
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Container(
-          width: MediaQuery.of(context).size.width,
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              'Reservation',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            content: FutureBuilder(
+              future: ReservationRepository()
+                  .getSingleReservation(result!.code!),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final reservation = snapshot.data!;
 
-        );
-      },
-    );
+                  return Column(
+                    children: [
+                      const Icon(
+                        Icons.check_circle_outline,
+                        color: Colors.greenAccent,
+                        size: 70,
+                      ),
+                      Text(
+                        'Salle: ${reservation.room.number}',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Date: ${reservation.date}',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Heure: ${reservation.time}',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ],
+                  );
+                }
+
+                if(snapshot.hasError) {
+                  return Column(
+                    children: [
+                      const Icon(
+                        Icons.error,
+                        color: Colors.redAccent,
+                        size: 70,
+                      ),
+                      Text(
+                        'Une erreur s\'est produite',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ],
+                  );
+                }
+
+                return const Center(child: CircularProgressIndicator());
+              },
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  context.pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    });
   }
 
   @override
